@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { unstable_Suspense as Suspense } from 'react';
 import styled from 'styled-components';
 import { createResource } from 'react-cache';
 import { cache } from '../cache';
@@ -16,7 +16,11 @@ const readImageLoad = createResource(
 
 const ImageLoader = (props) => {
   const src = readImageLoad.read(cache, props.src);
-  return <Img {...props} src={src} />;
+  return (
+    <Suspense maxDuration={1500} fallback={<Img {...props} />}>
+      <Img {...props} src={src} />
+    </Suspense>
+  );
 };
 
 export default ImageLoader;
